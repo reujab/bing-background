@@ -1,11 +1,17 @@
 package main
 
-import "encoding/json"
-import "fmt"
-import "github.com/reujab/wallpaper"
-import "io/ioutil"
-import "net/http"
-import "os"
+import (
+	"encoding/json"
+	"net/http"
+
+	"github.com/reujab/wallpaper"
+)
+
+type images struct {
+	Images []struct {
+		URL string `json:"url"`
+	} `json:"images"`
+}
 
 func main() {
 	res, err := http.Get("https://www.bing.com/HPImageArchive.aspx?format=js&n=1")
@@ -14,39 +20,19 @@ func main() {
 		panic(err)
 	}
 
-	defer func() {
-		if err := res.Body.Close(); err != nil {
-			panic(err)
-		}
-	}()
+	defer res.Body.Close()
 
-	bytes, err := ioutil.ReadAll(res.Body)
+	images := new(images)
+
+	err = json.NewDecoder(res.Body).Decode(images)
 
 	if err != nil {
 		panic(err)
 	}
 
-	data := map[string]interface{}{}
+	err = wallpaper.SetFromURL("https://www.bing.com" + images.Images[0].URL)
 
-	if err := json.Unmarshal(bytes, &data); err != nil {
+	if err != nil {
 		panic(err)
-	}
-
-	imageURL := "https://www.bing.com" + data["images"].([]interface{})[0].(map[string]interface{})["url"].(string)
-
-	if err := wallpaper.SetFromURL(imageURL); err != nil {
-		if err == wallpaper.ErrUnsupportedDE {
-			desktop := wallpaper.Desktop
-
-			if desktop == "" {
-				desktop = "Your desktop environment"
-			}
-
-			fmt.Fprintf(os.Stderr, "%s is not supported.\n", desktop)
-			fmt.Fprintf(os.Stderr, "However, you can download %s and set it as your wallpaper manually.\n", imageURL)
-			os.Exit(1)
-		} else {
-			panic(err)
-		}
 	}
 }
