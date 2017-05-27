@@ -38,5 +38,4 @@ See [this StackOverflow question](https://stackoverflow.com/questions/6442364/ru
 ## Notes
 
 * On Windows and KDE, you must log out and in again for the background to update.
-* The macOS version has not been tested, so it may not work.
 * Enlightenment is not supported.
