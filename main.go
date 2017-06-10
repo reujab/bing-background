@@ -20,7 +20,13 @@ func main() {
 		panic(err)
 	}
 
-	defer res.Body.Close()
+	defer func() {
+		err = res.Body.Close()
+
+		if err != nil {
+			panic(err)
+		}
+	}()
 
 	images := new(images)
 
