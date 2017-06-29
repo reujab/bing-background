@@ -16,28 +16,19 @@ type images struct {
 func main() {
 	res, err := http.Get("https://www.bing.com/HPImageArchive.aspx?format=js&n=1")
 
-	if err != nil {
-		panic(err)
-	}
+	check(err)
 
 	defer func() {
-		err = res.Body.Close()
-
-		if err != nil {
-			panic(err)
-		}
+		check(res.Body.Close())
 	}()
 
 	images := new(images)
 
-	err = json.NewDecoder(res.Body).Decode(images)
+	check(json.NewDecoder(res.Body).Decode(images))
+	check(wallpaper.SetFromURL("https://www.bing.com" + images.Images[0].URL))
+}
 
-	if err != nil {
-		panic(err)
-	}
-
-	err = wallpaper.SetFromURL("https://www.bing.com" + images.Images[0].URL)
-
+func check(err error) {
 	if err != nil {
 		panic(err)
 	}
