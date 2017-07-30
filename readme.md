@@ -2,14 +2,6 @@
 
 A cross-platform (Linux, Windows, and macOS) application that sets your desktop wallpaper to the [Bing image of the day](https://www.bing.com/gallery/).
 
-## Installation
-
-```sh
-go get github.com/reujab/bing-background
-```
-
-or download a binary on [the releases page](https://github.com/reujab/bing-background/releases).
-
 ## Running at startup
 
 ### Linux
@@ -30,10 +22,6 @@ where `<binary>` is replaced with the path to the `bing-background` binary relat
 Move the `bing-background.exe` binary to `%HOMEDRIVE%\%HOMEPATH%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`.
 
 Ensure that the binary was compiled with `go build -ldflags -H=windowsgui main.go` so a command prompt does not open when you log in.
-
-### macOS
-
-See [this StackOverflow question](https://stackoverflow.com/questions/6442364/running-script-upon-login-mac).
 
 ## Notes
 
