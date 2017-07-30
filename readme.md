@@ -25,5 +25,5 @@ Ensure that the binary was compiled with `go build -ldflags -H=windowsgui main.g
 
 ## Notes
 
-* On Windows and KDE, you must log out and in again for the background to update.
+* On Windows, you must log out and in again for the background to update.
 * Enlightenment is not supported.
